@@ -13,6 +13,7 @@ router.post('/api/customer/register', async (req, res) => {
     // Create a new user
     try {
         console.log('User create')
+        console.log(config.db)
         const user = new User(req.body)
         console.log('created')
         await user.save()

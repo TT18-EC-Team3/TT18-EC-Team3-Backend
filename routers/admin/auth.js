@@ -57,7 +57,7 @@ router.post('/api/admin/refresh-token', async(req, res) => {
                     expiresIn: config.refreshLife
                 })
                 await Refresh.updateOne({session: token}, {session: refresh})
-                const access = jwt.sign({_id : aid, session : token}, config.secret, {
+                const access = jwt.sign({_id : aid, session : refresh}, config.secret, {
                     expiresIn : config.tokenLife,
                 })
                 res.status(201).send({access})

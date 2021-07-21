@@ -12,6 +12,9 @@
 # production
 /build
 
+/routers/avatar/files
+/routers/admin/avatar/files
+
 # misc
 .env
 .DS_Store

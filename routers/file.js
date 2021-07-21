@@ -41,30 +41,40 @@ router.post('/api/customer/update-avatar', upload.single('file'), auth, (req, re
   })
 })
 
-router.get('/api/customer/get-avatar', auth, (req, res) => {
+router.get('/api/customer/get-avatar', auth, async(req, res) => {
     console.log('get avatar')
     const uid = req.uid
     console.log(uid)
-    Image.findOne({uid: uid, type: 1}, (err, image) => {
-      if (err) return res.sendStatus(404)
+    const image = await Image.findOne({uid: uid, type: 1});
+    if (!image) {
+      res.status(404).send({message: "Not Found"})
+    }
+    else{
       fs.createReadStream(path.resolve(UPLOAD_PATH, image.filename)).pipe(res)
-    })
+    }
+      
   })
 
-router.get('/api/tutor/get-avatar', (req, res) => {
+router.get('/api/tutor/get-avatar', async(req, res) => {
   const uid = req.headers.uid
-  Image.findOne({uid: uid, type: 2}, (err, image) => {
-    if (err) return res.sendStatus(404)
-    fs.createReadStream(path.resolve(UPLOAD_PATH, image.filename)).pipe(res)
-  })
+  const image = await Image.findOne({uid: uid, type: 2});
+    if (!image) {
+      res.status(404).send({message: "Not Found"})
+    }
+    else{
+      fs.createReadStream(path.resolve(UPLOAD_PATH, image.filename)).pipe(res)
+    }
 })
 
-router.get('/api/course/get-avatar', (req, res) => {
+router.get('/api/course/get-avatar', async(req, res) => {
   const uid = req.uid
-  Image.findOne({uid: uid, type: 3}, (err, image) => {
-    if (err) return res.sendStatus(404)
-    fs.createReadStream(path.resolve(UPLOAD_PATH, image.filename)).pipe(res)
-  })
+  const image = await Image.findOne({uid: uid, type: 3});
+    if (!image) {
+      res.status(404).send({message: "Not Found"})
+    }
+    else{
+      fs.createReadStream(path.resolve(UPLOAD_PATH, image.filename)).pipe(res)
+    }
 })
 
 module.exports = router;

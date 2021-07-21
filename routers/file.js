@@ -42,6 +42,7 @@ router.post('/api/customer/update-avatar', upload.single('file'), auth, (req, re
 })
 
 router.get('/api/customer/get-avatar', auth, (req, res) => {
+    console.log('get avatar')
     const uid = req.uid
     console.log(uid)
     Image.findOne({uid: uid, type: 1}, (err, image) => {

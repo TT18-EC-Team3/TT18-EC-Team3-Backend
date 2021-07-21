@@ -42,7 +42,7 @@ router.post('/api/customer/update-avatar', upload.single('file'), auth, (req, re
 })
 
 router.get('/api/customer/get-avatar', auth, (req, res) => {
-    const uid = req.headers.uid
+    const uid = req.uid
     Image.findOne({uid: uid, type: 1}, (err, image) => {
       if (err) return res.sendStatus(404)
       fs.createReadStream(path.resolve(UPLOAD_PATH, image.filename)).pipe(res)

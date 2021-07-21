@@ -46,6 +46,7 @@ router.get('/api/customer/get-avatar', auth, async(req, res) => {
     const uid = req.uid
     console.log(uid)
     const image = await Image.findOne({uid: uid, type: 1});
+    console.log(image)
     if (!image) {
       res.status(404).send({message: "Not Found"})
     }

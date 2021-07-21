@@ -4,6 +4,7 @@ const Refresh = require('../../models/refresh')
 const auth = require('../../middlewares/admin/auth')
 const jwt = require('jsonwebtoken')
 const config = require('../../config')
+const { ObjectID, ObjectId } = require('mongodb')
 
 const router = express.Router()
 
@@ -42,7 +43,9 @@ router.post('/api/admin/refresh-token', async(req, res) => {
         
     } else {
         const aid = ref.uid
-        const admin = Admin.findOne({_id : aid})
+        console.log(aid)
+        const admin = await Admin.findOne({_id : ObjectId(aid)})
+        console.log(admin)
         if (!admin){
             res.status(400).send({'message': 'Not admin'})
         } else {

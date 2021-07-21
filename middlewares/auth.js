@@ -6,9 +6,13 @@ const Refresh = require('../models/refresh')
 
 const auth = async(req, res, next) => {
     try {
+        console.log('aaaa')
         const token = req.header('Authorization').replace('Bearer ', '')
+        console.log(token)
         const data = jwt.verify(token, config.secret)
         const uid = jwt.verify(data.session, config.refreshTokenSecret)
+        console.log(data)
+        console.log(uid)
         if (uid._id !== data._id){
             throw new Error({error: "UserID does not match"})
         }

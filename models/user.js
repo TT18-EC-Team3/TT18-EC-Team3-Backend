@@ -8,26 +8,15 @@ const config = require('../config')
 const Refresh = require('./refresh')
 
 const userSchema = mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        lowercase: true,
+    name: {type: String, required: true, trim: true},
+    email: {type: String, required: true, unique: true, lowercase: true,
         validate: value => {
             if (!validator.isEmail(value)) {
                 throw new Error({error: 'Invalid Email address'})
             }
         }
     },
-    password: {
-        type: String,
-        required: true,
-        minLength: 8,
+    password: { type: String, required: true, minLength: 8,
         validate: value => {
             var regex = /^(?=.*[0-9])(?=.*[!@#$%^&*_])[a-zA-Z0-9!@#$%^&*_]{8,16}$/
             if (!regex.test(value)){
@@ -35,45 +24,22 @@ const userSchema = mongoose.Schema({
             }
         }
     },
-   phone : {
-       type : Number,
-       required: true,
+   phone : { type : Number, required: true,
        validate: value => {
             if (!validatePhoneNumber.validate(value)){
                 throw new Error({error : 'Invalid Phone number'})
             }
        }
    }, 
-   address : {
-       type: String,
-       required: false
-   },
-   DayCreated : {
-       type: String,
-       required: false,
-   },
-   LastAccessed : {
-       type: String,
-       required: false,
-   },
-   gender : {
-       type: Boolean,
-       required : true,
-   },
-   acalevel: {
-       type: String,
-       required: false,
-   },
+   address : {type: String, required: false},
+   DayCreated : {type: String, required: false,},
+   LastAccessed : {type: String, required: false,},
+   gender : {type: Number,required : true,},
+   acalevel: {type: String,required: false,},
+   DOB: {type: String,required: true,},
    fav_subs: [{
-        subject: {
-            type: String,
-            required: false
-        }
-   }],
-   DOB: {
-       type: String,
-       required: true,
-   }
+        subject: {type: String,required: false}
+   }]
 })
 
 userSchema.pre('save', async function (next) {
@@ -104,7 +70,7 @@ userSchema.methods.generateAuthToken = async function() {
 
 userSchema.statics.findByCredentials = async (email, password) => {
     // Search for a user by email and password.
-    const user = await User.findOne({ email} )
+    const user = await User.findOne({ email })
     if (!user) {
         throw new Error({ error: 'Invalid login credentials' })
     }

@@ -1,6 +1,8 @@
 const express = require('express')
 const userRouter = require('./routers/user')
 const adminRouter = require('./routers/admin/auth')
+const tutorRouter = require('./routers/tutorRouter')
+const courseRouter = require('./routers/courseRouter')
 const port = process.env.PORT
 require('./database/data')
 
@@ -11,6 +13,8 @@ app.use(express.json())
 
 app.use(userRouter)
 app.use(adminRouter)
+app.use(tutorRouter)
+app.use(courseRouter)
 
 app.get('/', function (req, res){
     res.send("hello")

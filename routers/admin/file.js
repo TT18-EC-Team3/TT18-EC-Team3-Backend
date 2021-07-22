@@ -14,7 +14,13 @@ const upload = multer({
 
 router.post('/api/admin/tutor/update-avatar', upload.single('file'), auth, (req, res) => {
     const uid = req.body.uid
+    if (!uid){
+      return res.status(404).send({message: "Please give tutor ID"})
+    }
     const images = req.file.filename
+    if (!images){
+      return res.status(404).send({message: "Please give image"})
+    }
     Tutor.updateOne({_id : uid},{avatar: images}, (err, result) => {
       if (err) 
         return res.status(404).send({message: "Failed"})
@@ -24,7 +30,13 @@ router.post('/api/admin/tutor/update-avatar', upload.single('file'), auth, (req,
 
 router.post('/api/admin/course/update-avatar', upload.single('file'), auth, (req, res) => {
     const uid = req.body.uid
+    if (!uid){
+      return res.status(404).send({message: "Please give course ID"})
+    }
     const images = eq.file.filename
+    if (!images){
+      return res.status(404).send({message: "Please give image"})
+    }
     Course.updateOne({_id : uid},{avatar: images}, (err, result) => {
       if (err) 
         return res.status(404).send({message: "Failed"})

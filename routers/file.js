@@ -35,6 +35,9 @@ router.get('/api/customer/get-avatar', auth, async(req, res) => {
 
 router.get('/api/tutor/get-avatar', async(req, res) => {
   const uid = req.headers.uid || req.query.uid
+  if (!uid){
+    return res.status(404).send({message: "Please give tutor ID"})
+  }
   const tutor = await Tutor.findOne({_id: uid});
     if (!tutor) {
       res.status(404).send({message: "Not Found"})
@@ -46,6 +49,9 @@ router.get('/api/tutor/get-avatar', async(req, res) => {
 
 router.get('/api/course/get-avatar', async(req, res) => {
   const uid = req.headers.uid || req.query.uid
+  if (!uid){
+    return res.status(404).send({message: "Please give course ID"})
+  }
   const course = await Course.findOne({_id: uid});
     if (!course) {
       res.status(404).send({message: "Not Found"})

@@ -12,7 +12,7 @@ const upload = multer({
   limits: {fileSize: 1000000, files: 1}
 })
 
-router.post('/api/admin/tutor/update-avatar', upload.array('file', 1), auth, (req, res) => {
+router.post('/api/admin/tutor/update-avatar', upload.single('file'), auth, (req, res) => {
     const uid = req.body.uid
     const images = req.file.filename
     Tutor.updateOne({_id : uid},{avatar: images}, (err, result) => {
@@ -22,7 +22,7 @@ router.post('/api/admin/tutor/update-avatar', upload.array('file', 1), auth, (re
     })
   })
 
-router.post('/api/admin/course/update-avatar', upload.array('file', 1), auth, (req, res) => {
+router.post('/api/admin/course/update-avatar', upload.single('file'), auth, (req, res) => {
     const uid = req.body.uid
     const images = eq.file.filename
     Course.updateOne({_id : uid},{avatar: images}, (err, result) => {

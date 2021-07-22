@@ -1,5 +1,7 @@
 const express = require('express')
 const User = require('../models/user')
+const Tutor = require('../models/tutor')
+const Course = require('../models/course')
 const auth = require('../middlewares/auth')
 const router = express.Router()
 const multer = require('multer')

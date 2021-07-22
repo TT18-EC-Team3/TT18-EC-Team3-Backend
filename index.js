@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors');
 const userRouter = require('./routers/user')
 const adminRouter = require('./routers/admin/auth')
 const tutorRouter = require('./routers/admin/tutor')

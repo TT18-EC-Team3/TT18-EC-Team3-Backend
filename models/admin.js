@@ -32,15 +32,10 @@ adminSchema.pre('save', async function (next) {
 adminSchema.methods.generateAuthToken = async function() {
     // Generate an auth token for the user
     const admin = this
-    const session = jwt.sign({_id: admin._id}, config.refreshTokenSecret, {
-        expiresIn: config.refreshLife
+    const access = jwt.sign({_id : admin._id}, config.adminsecret, {
+        expiresIn : config.adminLife,
     })
-    const refresh = new Refresh({uid: admin._id, session})
-    await refresh.save()
-    const access = jwt.sign({_id : admin._id, session}, config.secret, {
-        expiresIn : config.tokenLife,
-    })
-    return [access, session]
+    return access
 }
 
 adminSchema.statics.findByCredentials = async (username, password) => {

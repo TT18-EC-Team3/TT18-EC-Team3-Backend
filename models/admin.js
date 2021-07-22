@@ -8,20 +8,9 @@ const config = require('../config')
 const Refresh = require('./refresh')
 
 const adminSchema = mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    username : {
-        type: String,
-        required: true,
-        unique: true
-    },
-    password: {
-        type: String,
-        required: true,
-        minLength: 8, 
+    name: {type: String, required: true, trim: true },
+    username : { type: String, required: true, unique: true },
+    password: { type: String, required: true, minLength: 8, 
         validate: value => {
             var regex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/
             if (!regex.test(value)){

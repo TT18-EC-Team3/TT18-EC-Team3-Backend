@@ -17,6 +17,10 @@ const adminSchema = mongoose.Schema({
                 throw new Error({error: 'Password not safe'})
             }
         }
+    },
+    avatar: {
+        type: String,
+        required: false
     }
 })
 
@@ -41,13 +45,10 @@ adminSchema.methods.generateAuthToken = async function() {
 adminSchema.statics.findByCredentials = async (username, password) => {
     // Search for a user by email and password.
     const admin = await Admin.findOne({ username } )
-    console.log(admin)
     if (!admin) {
         throw new Error({ error: 'Invalid login credentials' })
     }
-    console.log('$$$')
     const isPasswordMatch = await bcrypt.compare(password, admin.password)
-    console.log(isPasswordMatch)
     if (!isPasswordMatch) {
         throw new Error({ error: 'Invalid login credentials' })
     }

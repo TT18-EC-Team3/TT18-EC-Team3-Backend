@@ -28,6 +28,10 @@ const tutorSchema = mongoose.Schema({
                 }
         }
     }, 
+    avatar:{
+        type: String,
+        required: false
+    },
     address : {
         type: String, 
         required: false

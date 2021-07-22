@@ -12,13 +12,9 @@ const router = express.Router()
 router.post('/api/customer/register', async (req, res) => {
     // Create a new user
     try {
-        console.log('User create')
         const user = new User(req.body)
-        console.log('created')
         await user.save()
-        console.log('saved')
         const [access, session] = await user.generateAuthToken()
-        console.log('token')
         res.status(201).send({ access, session })
     } catch (error) {
         res.status(400).send({error})

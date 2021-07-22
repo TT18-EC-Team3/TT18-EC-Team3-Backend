@@ -31,6 +31,10 @@ const userSchema = mongoose.Schema({
             }
        }
    }, 
+   avatar:{
+        type: String,
+        required: false
+    },
    address : {type: String, required: false},
    DayCreated : {type: String, required: false,},
    LastAccessed : {type: String, required: false,},

@@ -7,6 +7,10 @@ const courseSchema = mongoose.Schema({
             required:true
         }
     }],
+    avatar:{
+        type: String,
+        required: false
+    },
     name: {
         type: String, 
         required: true, 

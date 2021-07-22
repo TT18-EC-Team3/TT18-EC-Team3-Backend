@@ -8,19 +8,16 @@ const router = express.Router()
 router.post('/api/admin/course/add',auth, async (req, res) => {
     // Create a new course
     try {
-        console.log('Course create')
         const course = new Course(req.body)
         const tutors_id = req.body.tutor
         const tutors = []
         for (var id of tutors_id){
-            console.log(id)
             const target = await Tutor.findOne({_id: id.id})
             if(!target)
                  return res.status(400).send({message: "Tutor not exist"})
             tutors.push(target)
         }
         for (var tutor of tutors){
-            console.log(tutor)
             tutor.addCourse(tutor._id, course._id)
         }
         await course.save()

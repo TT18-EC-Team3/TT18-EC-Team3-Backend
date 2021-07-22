@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "crypto": "^1.0.1",
     "dotenv": "^10.0.0",
     "env-cmd": "^10.1.0",
     "express": "^4.17.1",
@@ -19,6 +20,7 @@
     "mongodb": "^4.0.0",
     "mongoose": "^5.13.2",
     "multer": "^1.4.2",
+    "multer-gridfs-storage": "^5.0.0",
     "nodemon": "^2.0.12",
     "package.json": "^2.0.1",
     "validate-phone-number-node-js": "^0.0.1",

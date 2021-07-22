@@ -19,6 +19,7 @@ router.post('/api/admin/tutor/add', auth,  async (req, res) => {
 router.post('/api/admin/tutor/update', auth, async(req, res) => {
     const tutor_id = req.body.uid
     const new_value = req.body.value
+
     if (!tutor_id || !new_value){
         return res.status(400).send({message: "Missing information"})
     }

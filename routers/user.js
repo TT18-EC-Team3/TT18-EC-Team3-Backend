@@ -12,13 +12,9 @@ const router = express.Router()
 router.post('/api/customer/register', async (req, res) => {
     // Create a new user
     try {
-        console.log('User create')
         const user = new User(req.body)
-        console.log('created')
         await user.save()
-        console.log('saved')
         const [access, session] = await user.generateAuthToken()
-        console.log('token')
         res.status(201).send({ access, session })
     } catch (error) {
         res.status(400).send({error})
@@ -44,7 +40,7 @@ router.post('/api/customer/refresh-token', async(req, res) => {
         
     } else {
         const uid = ref.uid
-        const user = User.findOne({_id : uid})
+        const user = await User.findOne({_id : uid})
         if (!user){
             res.status(400).send({'message': 'Not a user'})
         } else {
@@ -59,7 +55,7 @@ router.post('/api/customer/refresh-token', async(req, res) => {
                     expiresIn: config.refreshLife
                 })
                 await Refresh.updateOne({session: token}, {session: refresh})
-                const access = jwt.sign({_id : uid, session : token}, config.secret, {
+                const access = jwt.sign({_id : uid, session : refresh}, config.secret, {
                     expiresIn : config.tokenLife,
                 })
                 res.status(201).send({access})

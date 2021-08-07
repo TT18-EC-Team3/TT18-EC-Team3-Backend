@@ -9,6 +9,7 @@ const file = require('./routers/file')
 const fileAdmin = require('./routers/admin/file')
 const tutor_public = require('./routers/tutor')
 const course_public = require('./routers/course')
+const paypal = require('./routers/paypal')
 require('./database/data')
 
 
@@ -29,6 +30,8 @@ app.use(file)
 
 app.use(tutor_public)
 app.use(course_public)
+
+app.use(paypal)
 
 app.get('/', function (req, res){
     res.send("hello")

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "env-cmd -f .env nodemon index.js"
   },
   "author": "",
   "license": "ISC",
@@ -14,9 +14,11 @@
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^10.0.0",
+    "ejs": "^3.1.6",
     "env-cmd": "^10.1.0",
     "express": "^4.17.1",
     "init": "^0.1.2",
+    "install": "^0.13.0",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.0.0",
     "mongoose": "^5.13.2",
@@ -24,6 +26,7 @@
     "multer-gridfs-storage": "^5.0.0",
     "nodemon": "^2.0.12",
     "package.json": "^2.0.1",
+    "paypal-rest-sdk": "^1.8.1",
     "validate-phone-number-node-js": "^0.0.1",
     "validator": "^13.6.0"
   },

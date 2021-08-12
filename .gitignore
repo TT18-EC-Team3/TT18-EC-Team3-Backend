@@ -11,6 +11,7 @@
 
 # production
 /build
+/uploads
 
 /routers/avatar/files
 /routers/admin/avatar/files

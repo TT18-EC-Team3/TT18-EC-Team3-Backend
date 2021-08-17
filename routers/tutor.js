@@ -19,6 +19,23 @@ router.get('/api/tutor/get-all', async(req, res) => {
     res.status(201).send({result: ret});
 })
 
+router.get('/api/tutor/search/by-name', async(req, res) => {
+    var ret = await Tutor.find({});
+    var qname = req.query.name.split(' ')
+    var result = []
+    for (var item in ret){
+        var tmp = ret[item].name.toLowerCase()
+        for (var ind in qname)
+        {
+            if (tmp.includes(qname[ind].toLowerCase())){
+                result.push(ret[item])
+                break
+            }
+        }
+    }
+    res.status(201).send(result);
+})
+
 // router.get('/api/tutor/delete-all', async(req, res) => {
 //     await Tutor.deleteMany({});
 //     var check = await Tutor.find({});

@@ -67,7 +67,7 @@ const tutorSchema = mongoose.Schema({
         id: {
             type:String, 
             required : false,
-            unique:true
+            unique: false
         }
     }],
     accent: {

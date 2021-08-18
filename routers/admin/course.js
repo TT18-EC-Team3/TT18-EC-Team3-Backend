@@ -37,6 +37,22 @@ router.post('/api/admin/course/update', auth, async(req, res) => {
     });
 })
 
+router.post('/api/admin/course/delete-one', auth, async (req, res) => {
+    const id = req.query.uid || req.headers.uid
+    if (!id){
+        return res.status(400).send({message: "Missing course ID"})
+    }
+    try {
+        await Course.removeSelf(id)
+        await Course.deleteOne({_id:id})
+        res.status(201).send({  message: "Success" })
+
+    } catch (error) {
+        console.log(error)
+        res.status(400).send({error})
+    }
+})
+
 // router.get('/api/course/deleteall', async(req, res) => {
 //     await Course.deleteMany({});
 //     var check = await Course.find({});

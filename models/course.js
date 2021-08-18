@@ -7,6 +7,7 @@ const courseSchema = mongoose.Schema({
             required:true
         }
     }],
+    price:{type: Number, required: true},
     avatar:{
         type: String,
         required: false

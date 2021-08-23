@@ -19,4 +19,34 @@ router.get('/api/course/get-all', async(req, res) => {
     res.status(201).send({ result: ret});
 })
 
+router.get('/api/course/search/by-name', async(req, res) => {
+    var ret = await Course.find({});
+    var qname = req.query.name.split(' ')
+    var result = []
+    for (var item in ret){
+        var tmp = ret[item].name.toLowerCase()
+        for (var ind in qname)
+        {
+            if (tmp.includes(qname[ind].toLowerCase())){
+                result.push(ret[item])
+                break
+            }
+        }
+    }
+    res.status(201).send(result);
+})
+
+// router.post('/api/course/update', async(req, res) => {
+//     await Course.updateOne({_id:req.body.uid},req.body.value,function(err, ret) {
+//         if (err) {
+//             res.status(401).send({message:"update failed"});
+//             console.log(err)
+//         }
+//         else{
+//             console.log("1 document updated");
+//             res.status(201).send(ret);
+//         }
+//     });
+// })
+
 module.exports = router;

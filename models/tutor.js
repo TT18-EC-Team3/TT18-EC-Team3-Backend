@@ -60,14 +60,14 @@ const tutorSchema = mongoose.Schema({
     major:[{
         item:{
             type: String, 
-            required : false
+            required : false,
         }
     }],
     course:[{
         id: {
             type:String, 
             required : false,
-            unique: false
+            //unique:true
         }
     }],
     accent: {
@@ -125,8 +125,14 @@ const tutorSchema = mongoose.Schema({
 tutorSchema.pre('save', function (next) {
 
     const tutor = this
-    tutor.noLike = 0
-    tutor.noOngoingCourse = 0
+    if (!tutor.noLike)
+        tutor.noLike = 0
+    if(!tutor.noOngoingCourse)
+        tutor.noOngoingCourse = 0
+    if(tutor.degree.length == 0)
+        tutor.degree.push({"item":"general"})
+    if(!tutor.rating)
+        tutor.rating = 3
     next()
 })
 
@@ -134,8 +140,33 @@ tutorSchema.pre('save', function (next) {
 tutorSchema.methods.addCourse = async (tutorID, ID) => {
     try{
         const target = await Tutor.findOne({_id:tutorID})
-        console.log(target)
-        target.course = target.course.concat({id : ID})
+        //console.log(target)
+        target.course.push({id : ID})
+        await target.save()
+    }
+    catch(err)
+    {
+        console.log(err)
+        return
+    }
+}
+
+tutorSchema.methods.addMajor = async (tutorID, major) => {
+    try{
+        const target = await Tutor.findOne({_id:tutorID})
+        console.log("add major for tutor "+major)
+        var addVal = {}
+        addVal.item = major
+        console.log(addVal)
+        var exist = false
+        for (i in target.major)
+            if (target.major[i].item == major){
+                console.log("major existed -> ignore")
+                exist = true
+                break
+            }
+        if(!exist)
+            target.major.push(addVal)
         await target.save()
     }
     catch(err)

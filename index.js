@@ -12,6 +12,8 @@ const course_public = require('./routers/course')
 const paypal = require('./routers/paypal')
 const payment = require('./routers/payment')
 const pay_admin = require('./routers/admin/payment')
+const voucher = require('./routers/voucher')
+const voucher_admin = require('./routers/admin/voucher')
 require('./database/data')
 
 
@@ -36,6 +38,9 @@ app.use(course_public)
 app.use(paypal)
 app.use(payment)
 app.use(pay_admin)
+
+app.use(voucher)
+app.use(voucher_admin)
 
 app.get('/', function (req, res){
     res.send("hello")

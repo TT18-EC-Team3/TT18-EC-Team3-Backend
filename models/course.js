@@ -54,8 +54,14 @@ const courseSchema = mongoose.Schema({
 
 courseSchema.pre('save', function (next) {
     const course = this
-    course.noLike = 0
-    course.rating = 4.5
+    if (!course.noLike)
+        course.noLike = 0
+    if (!course.rating)
+        course.rating = 3
+    if(!course.level)
+        course.level = "general"
+    if (course.subject.length == 0)
+        course.subject.push({"item":"general"})
     next()
 })
 

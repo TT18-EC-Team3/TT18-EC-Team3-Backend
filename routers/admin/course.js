@@ -17,10 +17,14 @@ router.post('/api/admin/course/add',auth, async (req, res) => {
                  return res.status(400).send({message: "Tutor not exist"})
             tutors.push(target)
         }
+        await course.save()
         for (var tutor of tutors){
             tutor.addCourse(tutor._id, course._id)
+            if (course.subject.length != 0){
+                for (var i in course.subject)
+                    tutor.addMajor(tutor._id,course.subject[i].item)
+            }
         }
-        await course.save()
         res.status(201).send({  message: "Success" })
     } catch (error) {
         res.status(400).send({error})

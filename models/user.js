@@ -53,6 +53,8 @@ userSchema.pre('save', async function (next) {
         user.password = await bcrypt.hash(user.password, 8)
     }
     let today = new Date().toISOString().slice(0, 10)
+    if (!user.acalevel)
+        user.acalevel = "general"
     user.DayCreated = today
     user.LastAccessed = today
     next()

@@ -17,10 +17,14 @@ router.post('/api/admin/course/add',auth, async (req, res) => {
                  return res.status(400).send({message: "Tutor not exist"})
             tutors.push(target)
         }
+        await course.save()
         for (var tutor of tutors){
             tutor.addCourse(tutor._id, course._id)
+            if (course.subject.length != 0){
+                for (var i in course.subject)
+                    tutor.addMajor(tutor._id,course.subject[i].item)
+            }
         }
-        await course.save()
         res.status(201).send({  message: "Success" })
     } catch (error) {
         res.status(400).send({error})
@@ -35,6 +39,22 @@ router.post('/api/admin/course/update', auth, async(req, res) => {
             res.status(201).send(ret);
         }
     });
+})
+
+router.post('/api/admin/course/delete-one', auth, async (req, res) => {
+    const id = req.query.uid || req.headers.uid
+    if (!id){
+        return res.status(400).send({message: "Missing course ID"})
+    }
+    try {
+        await Course.removeSelf(id)
+        await Course.deleteOne({_id:id})
+        res.status(201).send({  message: "Success" })
+
+    } catch (error) {
+        console.log(error)
+        res.status(400).send({error})
+    }
 })
 
 // router.get('/api/course/deleteall', async(req, res) => {

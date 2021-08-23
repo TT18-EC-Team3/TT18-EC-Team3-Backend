@@ -1,6 +1,6 @@
 const express = require('express')
 const Course = require('../models/course')
-
+const Tutor = require('../models/tutor')
 const router = express.Router()
 
 
@@ -35,18 +35,5 @@ router.get('/api/course/search/by-name', async(req, res) => {
     }
     res.status(201).send(result);
 })
-
-// router.post('/api/course/update', async(req, res) => {
-//     await Course.updateOne({_id:req.body.uid},req.body.value,function(err, ret) {
-//         if (err) {
-//             res.status(401).send({message:"update failed"});
-//             console.log(err)
-//         }
-//         else{
-//             console.log("1 document updated");
-//             res.status(201).send(ret);
-//         }
-//     });
-// })
 
 module.exports = router;

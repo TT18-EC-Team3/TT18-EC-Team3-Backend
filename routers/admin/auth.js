@@ -13,11 +13,12 @@ router.post('/api/admin/log-in', async(req, res) => {
     try {
         const admin = await Admin.findByCredentials(username, password)
         if (!admin){
-            return res.status(401).send({error: 'Login failed! Check authentication credentials'})
+            return res.status(401).send({error: 'Login failed! Check authentication credentials or not found'})
         }
         const access = await admin.generateAuthToken()
         res.status(201).send({ access })
     } catch (error){
+        console.log(error)
         res.status(400).send({error : 'Login failed! Check authentication credentials'})
     }
 })

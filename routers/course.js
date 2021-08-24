@@ -14,10 +14,10 @@ router.get('/api/course/get-one', async(req, res) => {
 })
 
 
-router.get('/api/course/get-all', async(req, res) => {
-    var ret = await Course.find({});
-    res.status(201).send({ result: ret});
-})
+// router.get('/api/course/get-all', async(req, res) => {
+//     var ret = await Course.find({});
+//     res.status(201).send({ result: ret});
+// })
 
 router.get('/api/course/search/by-name', async(req, res) => {
     var ret = await Course.find({});

@@ -32,7 +32,13 @@ router.post('/api/admin/course/add',auth, async (req, res) => {
 })
 
 router.post('/api/admin/course/update', auth, async(req, res) => {
-    Course.updateOne({_id:req.body.uid},req.body.value,function(err, ret) {
+    const course_id = req.body.cid
+    const new_value = req.body.value
+
+    if (!course_id || !new_value){
+        return res.status(400).send({message: "Missing information"})
+    }
+    Course.updateOne({_id: course_id}, new_value,function(err, ret) {
         if (err) res.status(401).send({message:"update failed"});
         else{
             console.log("1 document updated");

@@ -46,17 +46,7 @@ const tutorSchema = mongoose.Schema({
             required: false
         }
     }],
-    DOB: {
-        day : {
-            type: Number, required: true
-        },
-        month: {
-            type: Number, required: true
-        },
-        year: {
-            type: Number, required: true
-        }
-    },
+    DOB: {type: String,required: true,},
     major:[{
         item:{
             type: String, 

@@ -43,6 +43,12 @@ const userSchema = mongoose.Schema({
    DOB: {type: String,required: true,},
    fav_subs: [{
         subject: {type: String,required: false}
+   }],
+   like_tutor: [{
+       tid: {type: String},
+   }],
+   like_course: [{
+       cid: {type: String},
    }]
 })
 
@@ -92,7 +98,6 @@ userSchema.statics.findByUID = async (uid) => {
     if (!user){
         throw new Error({error: "Cannot find with this uid"})
     }
-    delete user.password
     return user
 }
 

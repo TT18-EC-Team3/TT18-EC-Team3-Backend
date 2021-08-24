@@ -8,6 +8,7 @@ const { send } = require('process')
 const { isNull } = require('util')
 const Tutor = require('../models/tutor')
 const Course = require('../models/course')
+const { route } = require('./admin/voucher')
 
 const router = express.Router()
 
@@ -196,6 +197,104 @@ router.post('/api/customer/recommend/tutor', async(req, res) => {
         console.log(error)
         res.status(400).send({error})
     }
+})
+
+router.post('/api/customer/tutor/like', auth, async(req, res) => {
+    var user = req.user
+    var uid = req.uid
+    var tid = req.body.tid
+    if (!tid){
+        return res.status(400).send({message: "Missing tutorID"})
+    }
+    var tut = await Tutor.findOne({_id : tid})
+    if (!tut){
+        return res.status(404).send({message: "Not found tutorID"})
+    }
+    var liked = user.like_tutor
+    var found = liked.find(element => element.tid === tid)
+    if (found){
+        return res.status(409).send({message: "Liked before"})
+    }
+    liked.push({tid})
+    await User.updateOne({_id: uid}, {like_tutor: liked})
+    var no = tut.noLike
+    if (!no) {
+        no = 0
+    }
+    await Tutor.updateOne({_id: tid}, {noLike: no + 1})
+    res.status(200).send({message: "OK"})
+})
+
+router.post('/api/customer/tutor/unlike', auth, async(req, res) => {
+    var user = req.user
+    var uid = req.uid
+    var tid = req.body.tid
+    if (!tid){
+        return res.status(400).send({message: "Missing tutorID"})
+    }
+    var tut = await Tutor.findOne({_id : tid})
+    if (!tut){
+        return res.status(404).send({message: "Not found tutorID"})
+    }
+    var liked = user.like_tutor
+    var found = liked.find(element => element.tid === tid)
+    if (!found){
+        return res.status(409).send({message: "Did not like before"})
+    }
+    var new_like = liked.filter(element => element.tid !== tid)
+    await User.updateOne({_id: uid}, {like_tutor: new_like})
+    var no = tut.noLike
+    await Tutor.updateOne({_id: tid}, {noLike: no - 1})
+    res.status(200).send({message: "OK"})
+})
+
+router.post('/api/customer/course/like', auth, async(req, res) => {
+    var user = req.user
+    var uid = req.uid
+    var cid = req.body.cid
+    if (!cid){
+        return res.status(400).send({message: "Missing courseID"})
+    }
+    var course = await Course.findOne({_id : cid})
+    if (!course){
+        return res.status(404).send({message: "Not found courseID"})
+    }
+    var liked = user.like_course
+    var found = liked.find(element => element.cid === cid)
+    if (found){
+        return res.status(409).send({message: "Liked before"})
+    }
+    liked.push({cid})
+    await User.updateOne({_id: uid}, {like_course: liked})
+    var no = course.noLike
+    if (!no){
+        no = 0
+    }
+    await Course.updateOne({_id: cid}, {noLike: no + 1})
+    res.status(200).send({message: "OK"})
+})
+
+router.post('/api/customer/course/unlike', auth, async(req, res) => {
+    var user = req.user
+    var uid = req.uid
+    var cid = req.body.cid
+    if (!cid){
+        return res.status(400).send({message: "Missing courseID"})
+    }
+    var course = await Course.findOne({_id : cid})
+    if (!course){
+        return res.status(404).send({message: "Not found tutorID"})
+    }
+    var liked = user.like_course
+    var found = liked.find(element => element.cid === cid)
+    if (!found){
+        return res.status(409).send({message: "Did not like before"})
+    }
+    var new_like = liked.filter(element => element.cid !== cid)
+    await User.updateOne({_id: uid}, {like_course: new_like})
+    var no = course.noLike
+    await Course.updateOne({_id: cid}, {noLike: no - 1})
+    res.status(200).send({message: "OK"})
 })
 
 module.exports = router;

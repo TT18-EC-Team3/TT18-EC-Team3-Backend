@@ -274,7 +274,7 @@ router.post('/api/customer/course/unlike', auth, async(req, res) => {
     }
     var course = await Course.findOne({_id : cid})
     if (!course){
-        return res.status(404).send({message: "Not found tutorID"})
+        return res.status(404).send({message: "Not found courseID"})
     }
     var liked = user.like_course
     var found = liked.find(element => element.cid === cid)
@@ -285,6 +285,83 @@ router.post('/api/customer/course/unlike', auth, async(req, res) => {
     await User.updateOne({_id: uid}, {like_course: new_like})
     var no = course.noLike
     await Course.updateOne({_id: cid}, {noLike: no - 1})
+    res.status(200).send({message: "OK"})
+})
+
+router.post('/api/customer/tutor/rate', auth, async(req, res) => {
+    var user = req.user
+    var uid = req.uid
+    var tid = req.body.tid
+    var r = req.body.rate
+    if (!tid || !r){
+        return res.status(400).send({message: "Missing courseID"})
+    }
+    var tutor = await Tutor.findOne({_id : tid})
+    if (!tutor){
+        return res.status(404).send({message: "Not found tutorID"})
+    }
+    var rate = user.rate_tutor
+    var found = rate.find(element => element.tid === tid)
+    var total_rate = tutor.total_rate
+    if (!total_rate){
+        total_rate = 0
+    }
+    var rating = tutor.rating
+    if (!rating){
+        rating = 0
+    }
+    var tot = rating * total_rate
+    if (!found){
+        rate.push({tid: tid, rate: r})
+        total_rate += 1
+        rating = (tot + r) / total_rate
+    } else {
+        var old = found.rate
+        rate = rate.filter(element => element.tid !== tid)
+        rate.push({tid: tid, rate: r})
+        rating = (tot - old + r) / total_rate
+    }
+    await User.updateOne({_id: uid}, {rate_tutor: rate})
+    await Tutor.updateOne({_id: tid}, {rating: rating, total_rate: total_rate})
+    res.status(200).send({message: "OK"})
+})
+
+router.post('/api/customer/course/rate', auth, async(req, res) => {
+    var user = req.user
+    var uid = req.uid
+    var cid = req.body.cid
+    var r = req.body.rate
+    if (!cid || !r){
+        return res.status(400).send({message: "Missing courseID"})
+    }
+    var course = await Course.findOne({_id : cid})
+    if (!course){
+        return res.status(404).send({message: "Not found tutorID"})
+    }
+    var rate = user.rate_course
+    var found = rate.find(element => element.cid === cid)
+    
+    var total_rate = course.total_rate
+    var rating = course.rating
+    if (!total_rate){
+        total_rate = 0
+    }
+    if (!rating){
+        rating = 0
+    }
+    var tot = rating * total_rate
+    if (!found){
+        rate.push({cid: cid, rate: r})
+        total_rate += 1
+        rating = (tot + r) / total_rate
+    } else {
+        var old = found.rate
+        rate = rate.filter(element => element.cid !== cid)
+        rate.push({cid: cid, rate: r})
+        rating = (tot - old + r) / total_rate
+    }
+    await User.updateOne({_id: uid}, {rate_course: rate})
+    await Course.updateOne({_id: cid}, {rating: rating, total_rate: total_rate})
     res.status(200).send({message: "OK"})
 })
 

@@ -49,6 +49,9 @@ const courseSchema = mongoose.Schema({
     noLike:{
         type:Number,
         required:false
+    },
+    total_rate:{
+        type: Number,
     }
 })
 
@@ -58,6 +61,8 @@ courseSchema.pre('save', function (next) {
         course.noLike = 0
     if (!course.rating)
         course.rating = 3
+    if (!course.total_rate)
+        course.rating = 0
     if(!course.level)
         course.level = "general"
     if (course.subject.length == 0)

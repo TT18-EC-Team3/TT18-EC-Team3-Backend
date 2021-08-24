@@ -49,6 +49,14 @@ const userSchema = mongoose.Schema({
    }],
    like_course: [{
        cid: {type: String},
+   }],
+   rate_tutor: [{
+       tid: {type: String},
+       rate: {type: Number},
+   }],
+   rate_course: [{
+       cid: {type: String},
+       rate: {type: Number},
    }]
 })
 

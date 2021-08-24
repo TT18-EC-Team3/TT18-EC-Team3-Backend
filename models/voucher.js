@@ -7,30 +7,6 @@ const voucherSchema = mongoose.Schema({
         unique: true,
     },
     from: {
-        // date: {
-        //     type: Number,
-        //     required: true,
-        // },
-        // month: {
-        //     type: Number,
-        //     required: true,
-        // },
-        // year: {
-        //     type: Number,
-        //     required: true,
-        // },
-        // hour: {
-        //     type: Number,
-        //     required: true,
-        // },
-        // minute: {
-        //     type: Number,
-        //     required: true,
-        // },
-        // second: {
-        //     type: Number,
-        //     required: true,
-        // },
         type: Date,
         required: false,
     },

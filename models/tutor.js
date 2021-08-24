@@ -109,7 +109,10 @@ const tutorSchema = mongoose.Schema({
             type: String, 
             required: true
         }
-    }]
+    }],
+    total_rate: {
+        type: Number,
+    }
 })
 
 tutorSchema.pre('save', function (next) {
@@ -123,6 +126,8 @@ tutorSchema.pre('save', function (next) {
         tutor.degree.push({"item":"general"})
     if(!tutor.rating)
         tutor.rating = 3
+    if(!tutor.total_rate)
+        tutor.rating = 0
     next()
 })
 

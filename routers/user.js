@@ -39,32 +39,23 @@ router.post('/api/customer/refresh-token', async(req, res) => {
     const token = req.header('Authorization').replace('Bearer ', '')
     const ref = await Refresh.findOne({session: token})
     if (!ref){
-        res.status(400).send({'message' : 'Refresh token does not exist'})
+        return res.status(400).send({'message' : 'Refresh token does not exist'})
         
-    } else {
-        const uid = ref.uid
-        const user = await User.findOne({_id : uid})
-        if (!user){
-            res.status(400).send({'message': 'Not a user'})
-        } else {
-            try{
-                var data = jwt.verify(token, config.refreshTokenSecret)
-                const access = jwt.sign({_id : data._id, session : token}, config.secret, {
-                    expiresIn : config.tokenLife,
-                })
-                res.status(201).send({access})
-            } catch (err) {
-                const refresh = jwt.sign({_id: uid}, config.refreshTokenSecret, {
-                    expiresIn: config.refreshLife
-                })
-                await Refresh.updateOne({session: token}, {session: refresh})
-                const access = jwt.sign({_id : uid, session : refresh}, config.secret, {
-                    expiresIn : config.tokenLife,
-                })
-                res.status(201).send({access})
-            }
-        }   
     }
+    const uid = ref.uid
+    const user = await User.findOne({_id : uid})
+    if (!user){
+        return res.status(400).send({'message': 'Not a user'})
+    } 
+    try{
+        var data = jwt.verify(token, config.refreshTokenSecret)
+        const access = jwt.sign({_id : data._id, session : token}, config.secret, {
+            expiresIn : config.tokenLife,
+        })
+        res.status(201).send({access})
+    } catch (err) {
+       res.status(201).send({message: "Time out"})
+    } 
 })
 
 router.post('/api/customer/log-out', auth, async(req, res) => {

@@ -21,6 +21,7 @@ const auth = async(req, res, next) => {
             throw new Error({error: "Not a user"})
         }
         req.uid = uid
+        req.user = user
         req.session = data.session
         next()
     } catch (error) {

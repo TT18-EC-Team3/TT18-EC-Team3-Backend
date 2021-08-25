@@ -49,6 +49,9 @@ router.get('/api/payment/admin/get-all', auth, async(req, res) => {
         let uid = now.userID
         let course = await Course.findOne({_id: cid})
         let user = await User.findOne({_id: uid})
+        if (!course || !user){
+            continue
+        }
         now['course'] = course
         now['user'] = user
         let tutor = course.tutor

@@ -42,14 +42,14 @@ router.get('/api/tutor/course/get-all', async(req, res) => {
         return res.status(400).send({message: "Missing tutor ID"})
     }
     var ret = await Tutor.findOne({_id: id})
+    if (!ret){
+        return res.status(400).send({message: "Not a tutor"})
+    }
     var courses = ret.course
     var retval = []
     for (var i in courses){
         var course = await Course.findOne({_id:courses[i].id})
-        var tmp = {}
-        tmp.name = course.name
-        tmp.price = course.price
-        retval.push(tmp)
+        retval.push(course)
     }
     res.status(201).send(retval)
 })

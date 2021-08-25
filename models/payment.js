@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const validator = require('validator')
 
 const paymentSchema = mongoose.Schema({
     courseID : {
@@ -16,6 +17,15 @@ const paymentSchema = mongoose.Schema({
     status:{
         type:Number,
         required:false
+    },
+    email: {
+        type: String,
+        required: true,
+        validate: value => {
+            if (!validator.isEmail(value)) {
+                throw new Error({error: 'Invalid Email address'})
+            }
+        }
     }
 })
 

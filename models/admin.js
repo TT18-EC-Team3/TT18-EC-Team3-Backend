@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken')
 const validatePhoneNumber = require('validate-phone-number-node-js')
 
 const config = require('../config')
-const Refresh = require('./refresh')
 
 const adminSchema = mongoose.Schema({
     name: {type: String, required: true, trim: true },

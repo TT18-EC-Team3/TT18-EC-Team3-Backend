@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken')
 const validatePhoneNumber = require('validate-phone-number-node-js')
 
 const config = require('../config')
-const Refresh = require('./refresh')
 
 const userSchema = mongoose.Schema({
     name: {type: String, required: true, trim: true},
@@ -77,15 +76,10 @@ userSchema.pre('save', async function (next) {
 userSchema.methods.generateAuthToken = async function() {
     // Generate an auth token for the user
     const user = this
-    const session = jwt.sign({_id: user._id}, config.refreshTokenSecret, {
-        expiresIn: config.refreshLife
-    })
-    const refresh = new Refresh({uid: user._id, session})
-    await refresh.save()
-    const access = jwt.sign({_id : user._id, session}, config.secret, {
+    const access = jwt.sign({_id : user._id}, config.secret, {
         expiresIn : config.tokenLife,
     })
-    return [access, session]
+    return access
 }
 
 userSchema.statics.findByCredentials = async (email, password) => {

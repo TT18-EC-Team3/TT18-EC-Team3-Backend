@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken')
 const Admin = require('../../models/admin')
 const config = require('../../config')
-const Refresh = require('../../models/refresh')
 
 
 const auth = async(req, res, next) => {

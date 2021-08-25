@@ -36,4 +36,22 @@ router.get('/api/course/search/by-name', async(req, res) => {
     res.status(201).send(result);
 })
 
+router.get('/api/course/tutor/get-all', async(req, res) => {
+    const id = req.query.uid || req.headers.uid
+    if (!id){
+        return res.status(400).send({message: "Missing course ID"})
+    }
+    var ret = await Course.findOne({_id: id})
+    if (!ret){
+        return res.status(400).send({message: "Not a course"})
+    }
+    var tutor = ret.tutor
+    var retval = []
+    for (var i in tutor){
+        var tut = await Tutor.findOne({_id:tutor[i].id})
+        retval.push(tut)
+    }
+    res.status(201).send(retval)
+})
+
 module.exports = router;

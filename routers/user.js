@@ -1,6 +1,5 @@
 const express = require('express')
 const User = require('../models/user')
-const Refresh = require('../models/refresh')
 const auth = require('../middlewares/auth')
 const jwt = require('jsonwebtoken')
 const config = require('../config')
@@ -17,14 +16,14 @@ router.post('/api/customer/register', async (req, res) => {
     try {
         const user = new User(req.body)
         await user.save()
-        const [access, session] = await user.generateAuthToken()
-        res.status(201).send([{ access, session },{"id":user._id}])
+        const access= await user.generateAuthToken()
+        res.status(201).send({ access,"id":user._id})
     } catch (error) {
         res.status(400).send({error})
     }
 })
 
-router.post('/api/customer/user-me', auth, async(req, res) => {
+router.get('/api/customer/user-me', auth, async(req, res) => {
     // View logged in user profile
     try{
         const user = await User.findByUID(req.uid)
@@ -34,33 +33,9 @@ router.post('/api/customer/user-me', auth, async(req, res) => {
     }
 })
 
-router.post('/api/customer/refresh-token', async(req, res) => {
-
-    const token = req.header('Authorization').replace('Bearer ', '')
-    const ref = await Refresh.findOne({session: token})
-    if (!ref){
-        return res.status(400).send({'message' : 'Refresh token does not exist'})
-        
-    }
-    const uid = ref.uid
-    const user = await User.findOne({_id : uid})
-    if (!user){
-        return res.status(400).send({'message': 'Not a user'})
-    } 
-    try{
-        var data = jwt.verify(token, config.refreshTokenSecret)
-        const access = jwt.sign({_id : data._id, session : token}, config.secret, {
-            expiresIn : config.tokenLife,
-        })
-        res.status(201).send({access})
-    } catch (err) {
-       res.status(201).send({message: "Time out"})
-    } 
-})
 
 router.post('/api/customer/log-out', auth, async(req, res) => {
     try {
-        await Refresh.deleteOne({session: req.session})
         res.status(201).send({"message" : "Success"})
     } catch (error){
         res.status(500).send({error})
@@ -74,8 +49,8 @@ router.post('/api/customer/log-in', async(req, res) => {
         if (!user){
             return res.status(401).send({error: 'Login failed! Check authentication credentials'})
         }
-        const [access, session] = await user.generateAuthToken()
-        res.status(201).send({ access, session })
+        const access = await user.generateAuthToken()
+        res.status(201).send({ access })
     } catch (error){
         res.status(400).send({error : 'Login failed! Check authentication credentials'})
     }

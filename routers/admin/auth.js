@@ -1,6 +1,5 @@
 const express = require('express')
 const Admin = require('../../models/admin')
-const Refresh = require('../../models/refresh')
 const auth = require('../../middlewares/admin/auth')
 const jwt = require('jsonwebtoken')
 const config = require('../../config')

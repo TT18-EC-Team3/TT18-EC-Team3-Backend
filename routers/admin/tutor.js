@@ -33,7 +33,7 @@ router.post('/api/admin/tutor/update', auth, async(req, res) => {
 })
 
 router.post('/api/admin/tutor/delete-one', auth, async (req, res) => {
-    const id = req.query.uid || req.headers.uid
+    const id = req.query.uid
     if (!id){
         return res.status(400).send({message: "Missing tutor ID"})
     }

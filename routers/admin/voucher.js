@@ -36,7 +36,7 @@ router.get('/api/admin/voucher/get-all', auth, async(req, res) => {
     res.status(201).send({result: ret});
 })
 
-router.delete('/api/admin/voucher/delete-one', auth, async(req, res) => {
+router.post('/api/admin/voucher/delete-one', auth, async(req, res) => {
     var vid = req.body.vid
     await Voucher.deleteOne({_id: vid})
     res.status(200).send({message: "OK"});

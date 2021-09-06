@@ -41,7 +41,13 @@ router.post('/api/admin/payment/reject', auth, async(req, res) => {
 })
 
 router.get('/api/payment/admin/get-all', auth, async(req, res) => {
-    var ret = await Payment.find({})
+    var status = req.query.status || req.headers.status
+    var ret
+    if (!status){
+        ret = await Payment.find({})
+    } else {
+        ret = await Payment.find({status: status})
+    }
     var retval = []
     for (i in ret){
         let now = JSON.parse(JSON.stringify(ret[i]))

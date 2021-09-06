@@ -20,7 +20,7 @@ router.post('/api/customer/voucher/apply', async(req, res) => {
         return res.status(406).send({message: "Time out"})
     }
     console.log(ret)
-    res.status(202).send({message: "Apply successfully"})
+    res.status(202).send({message: ret})
 })
 
 module.exports = router;
